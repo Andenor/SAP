@@ -630,7 +630,7 @@ FORM tms_get_history_rfc  USING    is_list TYPE ty_list_sys
     is_list-datefrom = gv_datefrom.
   ENDIF.
   IF is_list-rfcdest IS NOT INITIAL.
-    CALL FUNCTION 'ZACN_TMS_RFC' DESTINATION is_list-rfcdest
+    CALL FUNCTION 'ZTMS_RFC' DESTINATION is_list-rfcdest
       EXPORTING
         iv_system     = is_list-system
         iv_domain     = is_list-domadest
