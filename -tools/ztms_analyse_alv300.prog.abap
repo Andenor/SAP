@@ -3,10 +3,10 @@
 *&---------------------------------------------------------------------*
 CLASS lcl_event_receiver300 DEFINITION DEFERRED.
 
-DATA: g_grid300             TYPE REF TO cl_gui_alv_grid,
-      g_container300        TYPE scrfname VALUE 'CONT_0300',
-      g_container_300 TYPE REF TO cl_gui_custom_container,
-      g_event_receiver300   TYPE REF TO lcl_event_receiver300.
+DATA: g_grid300           TYPE REF TO cl_gui_alv_grid,
+      g_container300      TYPE scrfname VALUE 'CONT_0300',
+      g_container_300     TYPE REF TO cl_gui_custom_container,
+      g_event_receiver300 TYPE REF TO lcl_event_receiver300.
 
 *----------------------------------------------------------------------*
 *       CLASS lcl_event_receiver DEFINITION
@@ -17,32 +17,32 @@ CLASS lcl_event_receiver300 DEFINITION.
 
   PUBLIC SECTION.
     METHODS:
-    handle_toolbar
-        FOR EVENT toolbar OF cl_gui_alv_grid
-            IMPORTING e_object e_interactive,
+      handle_toolbar
+                    FOR EVENT toolbar OF cl_gui_alv_grid
+        IMPORTING e_object e_interactive,
 
-    handle_user_command
-        FOR EVENT user_command OF cl_gui_alv_grid
-            IMPORTING e_ucomm,
+      handle_user_command
+                    FOR EVENT user_command OF cl_gui_alv_grid
+        IMPORTING e_ucomm,
 
-    handle_after_user_command
-        FOR EVENT after_user_command OF cl_gui_alv_grid
-            IMPORTING e_ucomm,
+      handle_after_user_command
+                    FOR EVENT after_user_command OF cl_gui_alv_grid
+        IMPORTING e_ucomm,
 
-    handle_data_changed_finished
-        FOR EVENT data_changed_finished OF cl_gui_alv_grid
-          IMPORTING e_modified ,
+      handle_data_changed_finished
+                    FOR EVENT data_changed_finished OF cl_gui_alv_grid
+        IMPORTING e_modified ,
 
-    handle_after_refresh
+      handle_after_refresh
         FOR EVENT after_refresh OF cl_gui_alv_grid,
 
-    handle_data_changed
-       FOR EVENT data_changed OF cl_gui_alv_grid
-           IMPORTING er_data_changed,
+      handle_data_changed
+                    FOR EVENT data_changed OF cl_gui_alv_grid
+        IMPORTING er_data_changed,
 
-    handle_double_click
-      FOR EVENT double_click OF cl_gui_alv_grid
-          IMPORTING e_row
+      handle_double_click
+                    FOR EVENT double_click OF cl_gui_alv_grid
+        IMPORTING e_row
                     e_column
                     es_row_no.
   PRIVATE SECTION.
@@ -53,8 +53,8 @@ CLASS lcl_event_receiver300 DEFINITION.
 
 * Methods to modularize event handler method HANDLE_DATA_CHANGED:
     METHODS: check_value
-     IMPORTING
-        ps_regul TYPE lvc_s_modi
+      IMPORTING
+        ps_regul        TYPE lvc_s_modi
         pr_data_changed TYPE REF TO cl_alv_changed_data_protocol.
 
 
@@ -140,16 +140,16 @@ CLASS lcl_event_receiver300 IMPLEMENTATION.
     DATA: lt_trkorr TYPE cts_trkorrs.
 
     DATA: lt_sel_idx TYPE lvc_t_row,
-          ls_sel LIKE LINE OF lt_sel_idx.
+          ls_sel     LIKE LINE OF lt_sel_idx.
 
-    DATA: lt_ot_in TYPE zacn_t_trkorr,
-          lt_ot_out TYPE zacn_t_trkorr,
-          ls_trkorr LIKE LINE OF lt_ot_in,
+    DATA: lt_ot_in   TYPE lcl_tms_analyse=>typ_t_trkorr,
+          lt_ot_out  TYPE lcl_tms_analyse=>typ_t_trkorr,
+          ls_trkorr  LIKE LINE OF lt_ot_in,
 
           ls_comment LIKE LINE OF gt_comments,
 
-          lt_filter TYPE lvc_t_filt,
-          ls_filter LIKE LINE OF lt_filter.
+          lt_filter  TYPE lvc_t_filt,
+          ls_filter  LIKE LINE OF lt_filter.
 
     CALL METHOD g_grid300->get_selected_rows
       IMPORTING
@@ -211,10 +211,10 @@ CLASS lcl_event_receiver300 IMPLEMENTATION.
   ENDMETHOD.                    "check
 
   METHOD handle_double_click.
-    DATA: ls_comment LIKE LINE OF gt_comments,
-          lt_trkorr TYPE cts_trkorrs,
-          ls_trkorr LIKE LINE OF lt_trkorr,
-          lv_syst TYPE ty_list_sys-struct_txt,
+    DATA: ls_comment  LIKE LINE OF gt_comments,
+          lt_trkorr   TYPE cts_trkorrs,
+          ls_trkorr   LIKE LINE OF lt_trkorr,
+          lv_syst     TYPE ty_list_sys-struct_txt,
           ls_list_sys LIKE LINE OF gt_list_sys.
 
     READ TABLE gt_comments INTO ls_comment INDEX e_row.
@@ -298,8 +298,8 @@ FORM build_fieldcat300  CHANGING ot_comments TYPE tyt_alv_comments
 
   DATA: ls_fieldcat LIKE LINE OF ot_fieldcat.
   DATA: ls_list_sys LIKE LINE OF gt_list_sys.
-  DATA: lt_celltab  TYPE lvc_t_styl,
-        ls_celltab  LIKE LINE OF lt_celltab.
+  DATA: lt_celltab TYPE lvc_t_styl,
+        ls_celltab LIKE LINE OF lt_celltab.
 
   FIELD-SYMBOLS : <fcat> TYPE lvc_s_fcat,
                   <falv> LIKE LINE OF ot_comments.
@@ -359,7 +359,7 @@ CLASS user_outbuf DEFINITION.
     INTERFACES if_abap_gzip_text_handler.
 
     CLASS-DATA : v_xstring TYPE xstring,
-                 v_len TYPE ty_trlog-len.
+                 v_len     TYPE ty_trlog-len.
 
 ENDCLASS.                    "user_outbuf DEFINITION
 

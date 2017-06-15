@@ -80,7 +80,7 @@ TYPES : tyt_log    TYPE tmstpalogs,
         ty_log     TYPE LINE OF tyt_log,
         ty_seq(5)  TYPE n,
         ty_indx(1) TYPE n,
-        tyr_trkorr TYPE zacn_tyr_trkorr.
+        tyr_trkorr TYPE lcl_tms_analyse=>typ_r_trkorr.
 
 CONSTANTS : gc_syst1(5)      TYPE c VALUE 'SYST1',
             gc_syst2(5)      TYPE c VALUE 'SYST2',

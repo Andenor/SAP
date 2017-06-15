@@ -17,32 +17,32 @@ CLASS lcl_event_receiver DEFINITION.
 
   PUBLIC SECTION.
     METHODS:
-    handle_toolbar
-        FOR EVENT toolbar OF cl_gui_alv_grid
-            IMPORTING e_object e_interactive,
+      handle_toolbar
+                    FOR EVENT toolbar OF cl_gui_alv_grid
+        IMPORTING e_object e_interactive,
 
-    handle_user_command
-        FOR EVENT user_command OF cl_gui_alv_grid
-            IMPORTING e_ucomm,
+      handle_user_command
+                    FOR EVENT user_command OF cl_gui_alv_grid
+        IMPORTING e_ucomm,
 
-    handle_after_user_command
-        FOR EVENT after_user_command OF cl_gui_alv_grid
-            IMPORTING e_ucomm,
+      handle_after_user_command
+                    FOR EVENT after_user_command OF cl_gui_alv_grid
+        IMPORTING e_ucomm,
 
-    handle_data_changed_finished
-        FOR EVENT data_changed_finished OF cl_gui_alv_grid
-          IMPORTING e_modified ,
+      handle_data_changed_finished
+                    FOR EVENT data_changed_finished OF cl_gui_alv_grid
+        IMPORTING e_modified ,
 
-    handle_after_refresh
+      handle_after_refresh
         FOR EVENT after_refresh OF cl_gui_alv_grid,
 
-    handle_data_changed
-       FOR EVENT data_changed OF cl_gui_alv_grid
-           IMPORTING er_data_changed,
+      handle_data_changed
+                    FOR EVENT data_changed OF cl_gui_alv_grid
+        IMPORTING er_data_changed,
 
-    handle_double_click
-      FOR EVENT double_click OF cl_gui_alv_grid
-          IMPORTING e_row
+      handle_double_click
+                    FOR EVENT double_click OF cl_gui_alv_grid
+        IMPORTING e_row
                     e_column
                     es_row_no.
   PRIVATE SECTION.
@@ -53,8 +53,8 @@ CLASS lcl_event_receiver DEFINITION.
 
 * Methods to modularize event handler method HANDLE_DATA_CHANGED:
     METHODS: check_value
-     IMPORTING
-        ps_regul TYPE lvc_s_modi
+      IMPORTING
+        ps_regul        TYPE lvc_s_modi
         pr_data_changed TYPE REF TO cl_alv_changed_data_protocol.
 
 
@@ -164,19 +164,19 @@ CLASS lcl_event_receiver IMPLEMENTATION.
           ls_rowid LIKE LINE OF lt_rowid.
 
     DATA: lt_sel_idx TYPE lvc_t_row,
-          ls_sel LIKE LINE OF lt_sel_idx.
+          ls_sel     LIKE LINE OF lt_sel_idx.
 
-    DATA: lt_ot_in TYPE zacn_t_trkorr,
-          lt_ot_range TYPE zacn_t_trkorr,
-          lt_ot_out TYPE zacn_t_trkorr,
-          ls_trkorr LIKE LINE OF lt_ot_in,
+    DATA: lt_ot_in    TYPE lcl_tms_analyse=>typ_t_trkorr,
+          lt_ot_range TYPE lcl_tms_analyse=>typ_t_trkorr,
+          lt_ot_out   TYPE lcl_tms_analyse=>typ_t_trkorr,
+          ls_trkorr   LIKE LINE OF lt_ot_in,
 
-          ls_alv LIKE LINE OF gt_alv,
+          ls_alv      LIKE LINE OF gt_alv,
 
-          lt_filter TYPE lvc_t_filt,
-          ls_filter LIKE LINE OF lt_filter,
-          lr_trkorr TYPE tyr_trkorr,
-          ls_otrange LIKE LINE OF lr_trkorr.
+          lt_filter   TYPE lvc_t_filt,
+          ls_filter   LIKE LINE OF lt_filter,
+          lr_trkorr   TYPE tyr_trkorr,
+          ls_otrange  LIKE LINE OF lr_trkorr.
 
     DATA: lt_trkorr TYPE cts_trkorrs.
     DATA: lt_alv TYPE tyt_alv.
@@ -224,12 +224,12 @@ CLASS lcl_event_receiver IMPLEMENTATION.
 
       WHEN 'ADD'.
         CLEAR lt_rowid.
-        DATA: lv_row TYPE i,
-              lv_value TYPE c,
-              lv_col TYPE i,
+        DATA: lv_row    TYPE i,
+              lv_value  TYPE c,
+              lv_col    TYPE i,
               ls_rowid2 TYPE lvc_s_row,
-              ls_colid TYPE lvc_s_col,
-              ls_rowno TYPE lvc_s_roid.
+              ls_colid  TYPE lvc_s_col,
+              ls_rowno  TYPE lvc_s_roid.
 
 
         CALL METHOD g_grid->get_current_cell
@@ -305,7 +305,7 @@ CLASS lcl_event_receiver IMPLEMENTATION.
         CALL METHOD g_grid->get_selected_rows
           IMPORTING
             et_index_rows = lt_sel_idx
-*           et_row_no     =                                                                                                                                             lt_sel_num
+*           et_row_no     = lt_sel_num
           .
 
         LOOP AT lt_sel_idx INTO ls_sel.
@@ -339,7 +339,7 @@ CLASS lcl_event_receiver IMPLEMENTATION.
         CALL METHOD g_grid->get_selected_rows
           IMPORTING
             et_index_rows = lt_sel_idx
-*           et_row_no     =                                                                                                                                             lt_sel_num
+*           et_row_no     = lt_sel_num
           .
 
         CHECK lt_sel_idx IS NOT INITIAL.
@@ -362,7 +362,7 @@ CLASS lcl_event_receiver IMPLEMENTATION.
         CALL METHOD g_grid->get_selected_rows
           IMPORTING
             et_index_rows = lt_sel_idx
-*           et_row_no     =                                                                                                                                             lt_sel_num
+*           et_row_no     = lt_sel_num
           .
 
         CALL METHOD g_grid->get_filter_criteria
@@ -391,12 +391,13 @@ CLASS lcl_event_receiver IMPLEMENTATION.
           ENDIF.
         ENDLOOP.
 
-        CALL FUNCTION 'ZTMS_ANALYSE_TR_DEPENDENCY'
+        lcl_tms_analyse=>tr_dependency(
           EXPORTING
-            it_trkorr       = lt_ot_in
-            it_trkorr_range = lr_trkorr
+            it_trkorr   = lt_ot_in
+            it_range_tr = lr_trkorr
           IMPORTING
-            ot_trkorr       = lt_ot_out.
+            ot_trkorr   = lt_ot_out
+        ).
 
         LOOP AT lt_ot_out INTO ls_trkorr.
           READ TABLE gt_alv WITH KEY trkorr_exp_src = ls_trkorr-trkorr
@@ -422,21 +423,21 @@ CLASS lcl_event_receiver IMPLEMENTATION.
   ENDMETHOD.                    "check
 
   METHOD handle_double_click.
-    DATA: ls_alv LIKE LINE OF gt_alv,
-          lt_trkorr TYPE cts_trkorrs,
-          ls_trkorr LIKE LINE OF lt_trkorr,
-          lv_syst TYPE ty_list_sys-struct_txt,
+    DATA: ls_alv      LIKE LINE OF gt_alv,
+          lt_trkorr   TYPE cts_trkorrs,
+          ls_trkorr   LIKE LINE OF lt_trkorr,
+          lv_syst     TYPE ty_list_sys-struct_txt,
           ls_list_sys LIKE LINE OF gt_list_sys.
 
     READ TABLE gt_alv INTO ls_alv INDEX e_row.
     CASE e_column.
       WHEN 'COMMENT'.
-        DATA: lv_row TYPE i,
-              lv_value TYPE c,
-              lv_col TYPE i,
+        DATA: lv_row    TYPE i,
+              lv_value  TYPE c,
+              lv_col    TYPE i,
               ls_rowid2 TYPE lvc_s_row,
-              ls_colid TYPE lvc_s_col,
-              ls_rowno TYPE lvc_s_roid.
+              ls_colid  TYPE lvc_s_col,
+              ls_rowno  TYPE lvc_s_roid.
 
 
         CALL METHOD g_grid->get_current_cell
@@ -564,8 +565,8 @@ FORM build_fieldcat CHANGING ot_alv TYPE tyt_alv
 
   DATA: ls_fieldcat LIKE LINE OF ot_fieldcat.
   DATA: ls_list_sys LIKE LINE OF gt_list_sys.
-  DATA: lt_celltab  TYPE lvc_t_styl,
-        ls_celltab  LIKE LINE OF lt_celltab.
+  DATA: lt_celltab TYPE lvc_t_styl,
+        ls_celltab LIKE LINE OF lt_celltab.
 
   FIELD-SYMBOLS : <fcat> TYPE lvc_s_fcat,
                   <falv> LIKE LINE OF ot_alv.

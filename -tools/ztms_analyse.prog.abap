@@ -1,12 +1,13 @@
 REPORT  ztms_analyse.
 
-INCLUDE ZTMS_ANALYSE_TOP.
-INCLUDE ZTMS_ANALYSE_ALV100.
-INCLUDE ZTMS_ANALYSE_ALV300.
-INCLUDE ZTMS_ANALYSE_SCR.
-INCLUDE ZTMS_ANALYSE_FRM.
-INCLUDE ZTMS_ANALYSE_PBO.
-INCLUDE ZTMS_ANALYSE_PAI.
+INCLUDE ztms_analyse_cls.
+INCLUDE ztms_analyse_top.
+INCLUDE ztms_analyse_alv100.
+INCLUDE ztms_analyse_alv300.
+INCLUDE ztms_analyse_scr.
+INCLUDE ztms_analyse_frm.
+INCLUDE ztms_analyse_pbo.
+INCLUDE ztms_analyse_pai.
 
 START-OF-SELECTION.
   PERFORM init.
