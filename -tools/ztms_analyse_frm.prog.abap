@@ -1,7 +1,4 @@
 *&---------------------------------------------------------------------*
-*&  Include           ZACNTRANSP_FRM
-*&---------------------------------------------------------------------*
-*&---------------------------------------------------------------------*
 *&      Form  INIT
 *&---------------------------------------------------------------------*
 *       text
@@ -706,7 +703,7 @@ FORM extract_log  CHANGING ot_alv TYPE tyt_alv.
   CHECK ot_alv IS NOT INITIAL.
 
   CLEAR gt_trlog.
-  SELECT * FROM zacntrlog INTO TABLE gt_trlog
+  SELECT * FROM ZTMS_TR_LOG INTO TABLE gt_trlog
            FOR ALL ENTRIES IN ot_alv
            WHERE trkorr EQ ot_alv-trkorr_exp_src.
 

@@ -1,12 +1,9 @@
-*&---------------------------------------------------------------------*
-*&  Include           ZACNTRANSP_TOP
-*&---------------------------------------------------------------------*
 TYPE-POOLS: icon, triwb, slis.
 
 TYPES : ty_tmslog     TYPE ZTMS_ANALYSE_LOG,
         tyt_tmslog    TYPE TABLE OF ZTMS_ANALYSE_LOG,
-        ty_trlog      TYPE zacntrlog,
-        tyt_trlog     TYPE TABLE OF zacntrlog,
+        ty_trlog      TYPE ZTMS_TR_LOG,
+        tyt_trlog     TYPE TABLE OF ZTMS_TR_LOG,
         ty_table_indx TYPE indx.
 
 

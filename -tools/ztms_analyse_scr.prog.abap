@@ -1,6 +1,3 @@
-*&---------------------------------------------------------------------*
-*&  Include           ZACNTRANSP_SCR
-*&---------------------------------------------------------------------*
 SELECTION-SCREEN BEGIN OF BLOCK b1 WITH FRAME TITLE text-b01.
 SELECT-OPTIONS: s_tkorr FOR <fs_log>-trkorr.
 PARAMETERS: p_datef LIKE sy-datum DEFAULT gv_datefrom.
