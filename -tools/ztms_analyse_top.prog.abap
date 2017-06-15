@@ -3,8 +3,8 @@
 *&---------------------------------------------------------------------*
 TYPE-POOLS: icon, triwb, slis.
 
-TYPES : ty_tmslog     TYPE zacntmslog,
-        tyt_tmslog    TYPE TABLE OF zacntmslog,
+TYPES : ty_tmslog     TYPE ZTMS_ANALYSE_LOG,
+        tyt_tmslog    TYPE TABLE OF ZTMS_ANALYSE_LOG,
         ty_trlog      TYPE zacntrlog,
         tyt_trlog     TYPE TABLE OF zacntrlog,
         ty_table_indx TYPE indx.
