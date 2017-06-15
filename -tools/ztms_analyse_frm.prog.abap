@@ -611,7 +611,7 @@ FORM start_date_rfc  CHANGING ov_datefrom TYPE datum.
 
   DATA: ls_tmslog LIKE LINE OF gt_tmslog.
 
-  SELECT * FROM zacntmslog INTO TABLE gt_tmslog
+  SELECT * FROM ZTMS_ANALYSE_LOG INTO TABLE gt_tmslog
            WHERE syst EQ p_syst.
 
   SORT gt_tmslog BY trtime DESCENDING.
@@ -678,7 +678,7 @@ FORM change_log_rfc  USING is_list TYPE ty_list_sys
   DELETE ADJACENT DUPLICATES FROM gt_tmslog
                              COMPARING syst listname trtime trkorr
                                        trcli trstep.
-  MODIFY zacntmslog FROM TABLE gt_tmslog.
+  MODIFY ZTMS_ANALYSE_LOG FROM TABLE gt_tmslog.
 
 
   CLEAR ot_log.
