@@ -231,6 +231,16 @@ CLASS lcl_tms_analyse IMPLEMENTATION.
 
   ENDMETHOD.
   METHOD _get_e071_ot.
+    DATA: lt_e071 TYPE typ_t_e071.
+
+    CHECK it_trkorr IS NOT INITIAL.
+
+    SELECT * FROM e071 INTO CORRESPONDING FIELDS OF TABLE lt_e071
+             FOR ALL ENTRIES IN it_trkorr
+             WHERE trkorr EQ it_trkorr-trkorr.
+
+    APPEND LINES OF lt_e071 TO ct_e071.
+    SORT ct_e071.
 
   ENDMETHOD.
   METHOD _progress_bar.
@@ -293,12 +303,12 @@ CLASS lcl_tms_analyse IMPLEMENTATION.
     INSERT ls_filter_obj INTO TABLE lr_filter_obj.
 
 * Récupération objets des OTs
-    _progress_bar( EXPORTING iv_texte = TEXT-i01 iv_percentage = 1 ).
+    _progress_bar( EXPORTING iv_texte = text-i01 iv_percentage = 1 ).
     _get_e071_ot( EXPORTING it_trkorr = it_trkorr CHANGING ct_e071 = lt_e071 ).
 
     SORT lt_e071.
 * Récupération des OTs à partir des objets
-    _progress_bar( EXPORTING iv_texte = TEXT-i02 iv_percentage = 45 ).
+    _progress_bar( EXPORTING iv_texte = text-i02 iv_percentage = 45 ).
 
     CLEAR lt_obj.
     LOOP AT lt_e071 INTO ls_e071.
@@ -359,7 +369,7 @@ CLASS lcl_tms_analyse IMPLEMENTATION.
         SORT lt_e071_next.
 
 * Récupération des OTs à partir des objets
-        _progress_bar( EXPORTING iv_texte = TEXT-i02 iv_percentage = 45 ).
+        _progress_bar( EXPORTING iv_texte = text-i02 iv_percentage = 45 ).
 
         CLEAR lt_obj_next.
         LOOP AT lt_e071_next INTO ls_e071.

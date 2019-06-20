@@ -31,7 +31,7 @@ CLASS lcl_event_receiver300 DEFINITION.
         IMPORTING e_modified ,
 
       handle_after_refresh
-        FOR EVENT after_refresh OF cl_gui_alv_grid,
+         FOR EVENT after_refresh OF cl_gui_alv_grid,
 
       handle_data_changed
                     FOR EVENT data_changed OF cl_gui_alv_grid
@@ -408,9 +408,11 @@ FORM add_text  USING it_trkorr TYPE cts_trkorrs
       output_handler = uref.
 
   TRY.
+      DATA(lv_len) = -1.
       CALL METHOD csref->set_out_buf
         IMPORTING
-          out_buf = lv_raw.
+          out_buf     = lv_raw
+          out_buf_len = lv_len.
     CATCH cx_parameter_invalid_range .
       IF 1 = 2.
       ENDIF.
@@ -435,7 +437,7 @@ FORM add_text  USING it_trkorr TYPE cts_trkorrs
   ENDLOOP.
 
   IF lt_comm IS NOT INITIAL.
-    INSERT ZTMS_TR_LOG FROM TABLE lt_comm .
+    INSERT ztms_tr_log FROM TABLE lt_comm .
   ENDIF.
 
   LOOP AT lt_comm INTO ls_comm.
@@ -465,7 +467,7 @@ FORM change_text  USING iv_trkorr TYPE ty_trlog-trkorr
   DATA: lt_trkorr TYPE cts_trkorrs.
   DATA: ls_comm LIKE LINE OF gt_comments.
 
-  SELECT * FROM ZTMS_TR_LOG INTO TABLE lt_comments
+  SELECT * FROM ztms_tr_log INTO TABLE lt_comments
                           WHERE guid EQ iv_guid.
 
   DESCRIBE TABLE lt_comments LINES lv_count.
@@ -509,7 +511,7 @@ FORM change_text  USING iv_trkorr TYPE ty_trlog-trkorr
           ENDIF.
         ENDLOOP.
 
-        MODIFY ZTMS_TR_LOG FROM TABLE lt_comments.
+        MODIFY ztms_tr_log FROM TABLE lt_comments.
 
       WHEN 2.
         DELETE lt_comments WHERE trkorr NE iv_trkorr.
@@ -518,7 +520,7 @@ FORM change_text  USING iv_trkorr TYPE ty_trlog-trkorr
         DELETE gt_trlog    WHERE trkorr EQ iv_trkorr
                            AND   guid EQ iv_guid.
 
-        DELETE ZTMS_TR_LOG FROM TABLE lt_comments.
+        DELETE ztms_tr_log FROM TABLE lt_comments.
 
 
         APPEND iv_trkorr TO lt_trkorr.
@@ -533,7 +535,7 @@ FORM change_text  USING iv_trkorr TYPE ty_trlog-trkorr
     DELETE gt_trlog    WHERE trkorr EQ iv_trkorr
                        AND   guid EQ iv_guid.
 
-    DELETE ZTMS_TR_LOG FROM TABLE lt_comments.
+    DELETE ztms_tr_log FROM TABLE lt_comments.
 
 
     APPEND iv_trkorr TO lt_trkorr.
@@ -600,7 +602,7 @@ FORM delete_text  USING iv_trkorr TYPE ty_trlog-trkorr
   DATA: lt_trkorr TYPE cts_trkorrs.
   DATA: ls_comm LIKE LINE OF gt_comments.
 
-  SELECT * FROM ZTMS_TR_LOG INTO TABLE lt_comments
+  SELECT * FROM ztms_tr_log INTO TABLE lt_comments
                           WHERE guid EQ iv_guid.
 
   DESCRIBE TABLE lt_comments LINES lv_count.
@@ -622,7 +624,7 @@ FORM delete_text  USING iv_trkorr TYPE ty_trlog-trkorr
     CASE lv_rep.
       WHEN 1.
 
-        DELETE ZTMS_TR_LOG FROM TABLE lt_comments.
+        DELETE ztms_tr_log FROM TABLE lt_comments.
         DELETE gt_trlog WHERE guid EQ iv_guid.
         DELETE gt_comments WHERE guid EQ iv_guid.
 
@@ -630,7 +632,7 @@ FORM delete_text  USING iv_trkorr TYPE ty_trlog-trkorr
 
         DELETE lt_comments WHERE trkorr NE iv_trkorr.
 
-        DELETE ZTMS_TR_LOG FROM TABLE lt_comments.
+        DELETE ztms_tr_log FROM TABLE lt_comments.
         DELETE gt_trlog WHERE trkorr EQ iv_trkorr
                         AND   guid EQ iv_guid.
         DELETE gt_comments WHERE trkorr EQ iv_trkorr
@@ -641,7 +643,7 @@ FORM delete_text  USING iv_trkorr TYPE ty_trlog-trkorr
   ELSE.
     DELETE lt_comments WHERE trkorr NE iv_trkorr.
 
-    DELETE ZTMS_TR_LOG FROM TABLE lt_comments.
+    DELETE ztms_tr_log FROM TABLE lt_comments.
     DELETE gt_trlog WHERE trkorr EQ iv_trkorr
                     AND   guid EQ iv_guid.
     DELETE gt_comments WHERE trkorr EQ iv_trkorr

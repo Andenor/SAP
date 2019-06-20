@@ -93,7 +93,7 @@ FORM get_config_syst  CHANGING ot_list_sys TYPE tyt_list_sys.
 
   CLEAR ls_list_sys.
   ls_list_sys-idx = lv_idx.
-  ls_list_sys-system = 'DXE'.
+  ls_list_sys-system = 'DR0'.
 *  ls_list_sys-struct_txt = gc_syst0.
   INSERT ls_list_sys INTO TABLE ot_list_sys.
 
@@ -101,7 +101,15 @@ FORM get_config_syst  CHANGING ot_list_sys TYPE tyt_list_sys.
 
   CLEAR ls_list_sys.
   ls_list_sys-idx = lv_idx.
-  ls_list_sys-system = 'RXE'.
+  ls_list_sys-system = 'QR0'.
+  ls_list_sys-struct_txt = gc_syst1.
+  INSERT ls_list_sys INTO TABLE ot_list_sys.
+
+  ADD 1 TO lv_idx.
+
+  CLEAR ls_list_sys.
+  ls_list_sys-idx = lv_idx.
+  ls_list_sys-system = 'QR2'.
   ls_list_sys-struct_txt = gc_syst1.
   INSERT ls_list_sys INTO TABLE ot_list_sys.
 
@@ -117,7 +125,7 @@ FORM get_config_syst  CHANGING ot_list_sys TYPE tyt_list_sys.
 
   CLEAR ls_list_sys.
   ls_list_sys-idx = lv_idx.
-  ls_list_sys-system = 'QXE'.
+  ls_list_sys-system = 'RR0'.
   ls_list_sys-struct_txt = gc_syst3.
   INSERT ls_list_sys INTO TABLE ot_list_sys.
 
@@ -125,7 +133,23 @@ FORM get_config_syst  CHANGING ot_list_sys TYPE tyt_list_sys.
 
   CLEAR ls_list_sys.
   ls_list_sys-idx = lv_idx.
-  ls_list_sys-system = 'PXE'.
+  ls_list_sys-system = 'RR2'.
+  ls_list_sys-struct_txt = gc_syst3.
+  INSERT ls_list_sys INTO TABLE ot_list_sys.
+
+  ADD 1 TO lv_idx.
+
+  CLEAR ls_list_sys.
+  ls_list_sys-idx = lv_idx.
+  ls_list_sys-system = 'PR0'.
+  ls_list_sys-struct_txt = gc_syst4.
+  INSERT ls_list_sys INTO TABLE ot_list_sys.
+
+  ADD 1 TO lv_idx.
+
+  CLEAR ls_list_sys.
+  ls_list_sys-idx = lv_idx.
+  ls_list_sys-system = 'PR2'.
   ls_list_sys-struct_txt = gc_syst4.
   INSERT ls_list_sys INTO TABLE ot_list_sys.
 
@@ -608,7 +632,7 @@ FORM start_date_rfc  CHANGING ov_datefrom TYPE datum.
 
   DATA: ls_tmslog LIKE LINE OF gt_tmslog.
 
-  SELECT * FROM ZTMS_ANALYSE_LOG INTO TABLE gt_tmslog
+  SELECT * FROM ztms_analyse_log INTO TABLE gt_tmslog
            WHERE syst EQ p_syst.
 
   SORT gt_tmslog BY trtime DESCENDING.
@@ -675,7 +699,7 @@ FORM change_log_rfc  USING is_list TYPE ty_list_sys
   DELETE ADJACENT DUPLICATES FROM gt_tmslog
                              COMPARING syst listname trtime trkorr
                                        trcli trstep.
-  MODIFY ZTMS_ANALYSE_LOG FROM TABLE gt_tmslog.
+  MODIFY ztms_analyse_log FROM TABLE gt_tmslog.
 
 
   CLEAR ot_log.
@@ -703,7 +727,7 @@ FORM extract_log  CHANGING ot_alv TYPE tyt_alv.
   CHECK ot_alv IS NOT INITIAL.
 
   CLEAR gt_trlog.
-  SELECT * FROM ZTMS_TR_LOG INTO TABLE gt_trlog
+  SELECT * FROM ztms_tr_log INTO TABLE gt_trlog
            FOR ALL ENTRIES IN ot_alv
            WHERE trkorr EQ ot_alv-trkorr_exp_src.
 
@@ -817,11 +841,11 @@ FORM read_text  USING    iv_len TYPE int4
       output_handler = unref.
 
 *TRY.
+  DATA(lv_len) = -1.
   CALL METHOD unzip->set_out_buf
     IMPORTING
-      out_buf = ov_text
-*     out_buf_len =
-    .
+      out_buf     = ov_text
+      out_buf_len = lv_len.
 * CATCH cx_parameter_invalid_range .
 *ENDTRY.
 
